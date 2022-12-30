@@ -2,6 +2,7 @@ var express = require("express");
 var request = require("request");
 var http = require("https");
 var YoutubeDlWrap = require('youtube-dl-wrap')
+const ytdl = require('ytdl-core');
 
 var app = express();
 const youtubedl = new YoutubeDlWrap("./youtube-dl.exe");
@@ -21,8 +22,9 @@ app.use(function(req, res, next) {
 
 app.get("/get-video-info", async function(req, res) {
 	console.log("getting data about video " + req.query.video_id);
-	const info = await youtubedl.getVideoInfo(req.query.video_id);
-	console.log("info sent");
+	// const info = await youtubedl.getVideoInfo(req.query.video_id);
+	const info = await ytdl.getInfo(req.query.video_id);
+	console.log("info sent:\n" + JSON.stringify(info));
 	res.send(info);
 });
 
